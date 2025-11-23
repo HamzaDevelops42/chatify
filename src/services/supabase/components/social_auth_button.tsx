@@ -19,7 +19,7 @@ export function SocialLoginForm({ className, ...props }: React.ComponentPropsWit
       const { error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
-          redirectTo: `${window.location.origin}/auth/oauth?next=/`,
+          redirectTo: `${window.location.origin}/auth/oauth?next=/conversation`,
         },
       })
 
