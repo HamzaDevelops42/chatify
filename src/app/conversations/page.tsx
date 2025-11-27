@@ -3,7 +3,7 @@ import { redirect } from 'next/navigation'
 import { LogoutButton } from '@/services/supabase/components/logout-button'
 import { createClient } from '@/services/supabase/server'
 
-export default async function ProtectedPage() {
+export default async function ConersationsPage() {
   const supabase = await createClient()
 
   const { data, error } = await supabase.auth.getClaims()
@@ -12,7 +12,7 @@ export default async function ProtectedPage() {
   }
 
   return (
-    <div className="flex h-svh w-full items-center justify-center gap-2">
+    <div className="">
       <p>
         Hello <span>{data.claims.email}</span>
       </p>
