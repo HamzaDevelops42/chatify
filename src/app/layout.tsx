@@ -23,7 +23,7 @@ export default function RootLayout({ children }: React.PropsWithChildren<{}>) {
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased h-svh`}
       >
-          <SidebarWrapper>{children}</SidebarWrapper>
+         {children}
       </body>
     </html>
   );
