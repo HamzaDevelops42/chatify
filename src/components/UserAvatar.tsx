@@ -41,7 +41,7 @@ const UserAvatar = () => {
             <DropdownMenuContent
                 side='top'
                 align='start'
-                 sideOffset={8}
+                sideOffset={8}
 
             >
                 <DropdownMenuLabel>{user?.user_metadata?.username || user?.user_metadata?.full_name || user?.email}</DropdownMenuLabel>
