@@ -1,8 +1,12 @@
+import ItemList from "@/components/ItemList";
 
 export default function ConversationsLayout({ children }: React.PropsWithChildren<{}>) {
     return (
-        <div>
+        <>
+            <ItemList title="Conversations">
+        Conversations Page
+            </ItemList>
             {children}
-        </div>
+        </>
     );
 }

@@ -5,10 +5,13 @@ import { Button } from './ui/button'
 import Link from 'next/link'
 import UserAvatar from './UserAvatar'
 import { ThemeToggle } from './ThemeToggle'
+import { useConversation } from '@/hooks/useConversation'
 
 const MobileNav = () => {
     const paths = useNavigation()
+    const { isActive } = useConversation()
 
+    if(isActive) return null
     return (
         <Card className='fixed bottom-4 w-[calc(100vw-32px)] flex items-center h-16  lg:hidden'>
             <nav className='w-full h-full'>
