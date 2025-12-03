@@ -8,7 +8,7 @@ import { createClient } from '@/services/supabase/client'
 import { useRouter } from 'next/navigation'
 
 const UserAvatar = () => {
-    const { user, isLoading } = useCurrentUser()
+    const { User: user, isLoading, profile } = useCurrentUser()
     const router = useRouter()
 
     const logout = async () => {
@@ -17,7 +17,7 @@ const UserAvatar = () => {
         router.push("/auth/login")
     }
 
-    console.log(user)
+    console.log(profile)
     return (
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
@@ -25,13 +25,13 @@ const UserAvatar = () => {
                     <Tooltip>
                         <TooltipTrigger asChild>
                             <Avatar className="cursor-pointer">
-                                <AvatarImage src={user?.user_metadata?.avatar_url} />
+                                <AvatarImage src={profile?.avatar_url || user?.user_metadata?.avatar_url} />
                                 <AvatarFallback><User /></AvatarFallback>
                             </Avatar>
                         </TooltipTrigger>
 
                         <TooltipContent>
-                            <p>{user?.user_metadata?.username || user?.user_metadata?.full_name || user?.email}</p>
+                            <p>{profile?.username || user?.user_metadata?.full_name || user?.email}</p>
                         </TooltipContent>
                     </Tooltip>
                 </div>
@@ -44,7 +44,7 @@ const UserAvatar = () => {
                 sideOffset={8}
 
             >
-                <DropdownMenuLabel>{user?.user_metadata?.username || user?.user_metadata?.full_name || user?.email}</DropdownMenuLabel>
+                <DropdownMenuLabel>{profile?.username || user?.user_metadata?.full_name || user?.email}</DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem onClick={logout} disabled={isLoading} className='cursor-pointer'>
                     Log out
