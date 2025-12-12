@@ -1,7 +1,7 @@
 import React from 'react'
 import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar'
 import { User } from 'lucide-react'
-import { useCurrentUser } from '@/services/supabase/hooks/useCurrentUser'
+import { useCurrentUser } from '@/services/supabase/hooks/useCurrentUserClient'
 import { Tooltip, TooltipContent, TooltipTrigger } from './ui/tooltip'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from './ui/dropdown-menu'
 import { createClient } from '@/services/supabase/client'
@@ -10,14 +10,12 @@ import { useRouter } from 'next/navigation'
 const UserAvatar = () => {
     const { User: user, isLoading, profile } = useCurrentUser()
     const router = useRouter()
-
     const logout = async () => {
         const supabase = createClient()
         await supabase.auth.signOut()
         router.push("/auth/login")
     }
 
-    console.log(profile)
     return (
         <DropdownMenu>
             <DropdownMenuTrigger asChild>

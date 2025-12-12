@@ -10,6 +10,8 @@ import { Field, FieldError, FieldGroup, FieldLabel } from "./ui/field"
 import { Input } from "./ui/input"
 import { LoadingSwap } from "./ui/loading-swap"
 import { useState } from "react"
+import { toast } from "sonner"
+import { sendFriendRequest } from "../services/supabase/actions/friends"
 
 const formShema = z.object({
   username: z.string().min(1, { message: "Username must be greater than 1 character" }).trim(),
@@ -25,8 +27,13 @@ const AddFriendDialog = () => {
     }
   })
 
-  async function onsubmit(data : z.infer<typeof formShema>) {
-    console.log(data)
+  async function onsubmit(data: z.infer<typeof formShema>) {
+    const response = await sendFriendRequest(data.username)
+    if(response.success){
+      toast.success(response.data.message)
+    }else {
+      toast.error(response.error)
+    }
   }
 
   return (
