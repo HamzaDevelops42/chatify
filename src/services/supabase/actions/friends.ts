@@ -124,3 +124,24 @@ export async function getFriendRequests() {
     })
 }
 
+export async function rejectFriendRequest(id: string) {
+    return actionResponse(async () => {
+
+        const { User } = await getCurrentUser()
+        if (!User) {
+            throw new Error("user not authenticated")
+        }
+
+        const supabase = await createAdminClient()
+
+        const { error } = await supabase.from("friend_requests").update({ "status": "rejected" }).eq("id", id).select("status")
+
+        if (error) {
+            throw new Error("Error rejecting request")
+        }
+
+        return {
+            message: "Friend request rejected successfully"
+        }
+    })
+}

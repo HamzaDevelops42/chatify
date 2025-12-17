@@ -12,6 +12,7 @@ import { LoadingSwap } from "./ui/loading-swap"
 import { useState } from "react"
 import { toast } from "sonner"
 import { sendFriendRequest } from "../services/supabase/actions/friends"
+import { useRouter } from "next/navigation"
 
 const formShema = z.object({
   username: z.string().min(1, { message: "Username must be greater than 1 character" }).trim(),
@@ -19,6 +20,7 @@ const formShema = z.object({
 
 const AddFriendDialog = () => {
   const [open, setOpen] = useState(false)
+  const router = useRouter()
 
   const form = useForm<z.infer<typeof formShema>>({
     resolver: zodResolver(formShema),
@@ -31,6 +33,8 @@ const AddFriendDialog = () => {
     const response = await sendFriendRequest(data.username)
     if(response.success){
       toast.success(response.data.message)
+      setOpen(false)
+      router.refresh()
     }else {
       toast.error(response.error)
     }

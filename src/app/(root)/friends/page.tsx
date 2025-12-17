@@ -16,7 +16,7 @@ async function FriendsPage() {
       <ItemList title='Friends' Action={<AddFriendDialog />}>
         {requests &&
           (requests.length === 0 ? (<p className='w-full h-full flex items-center justify-center'>No Friend requests found</p>) :
-            (requests.map((request, i) => (<FriendRequest key={i} username={request.sender.username} avatarUrl={request.sender?.avatar_url} />))))
+            (requests.map((request, i) => (<FriendRequest key={i} id={request.id} username={request.sender.username} avatarUrl={request.sender?.avatar_url} />))))
         }
       </ItemList>
       <ConversationsFallback />
