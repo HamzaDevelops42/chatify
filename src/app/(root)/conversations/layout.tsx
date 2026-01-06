@@ -9,7 +9,7 @@ export default async function ConversationsLayout({ children }: React.PropsWithC
         <>
             <ItemList title="Conversations">
                 {
-                    conversations.length === 0 ? <p className="w-full h-full flex items-center justify-center">No conversations found</p> : conversations.map(conversation => (<ConversationBox key={conversation.user.id} id={conversation.user.id} username={conversation.user.username} avatar_url={conversation.user.avatar_url} />))
+                    conversations.length === 0 ? <p className="w-full h-full flex items-center justify-center">No conversations found</p> : conversations.map(conversation => (<ConversationBox key={conversation.chat_id} id={conversation.chat_id} username={conversation.user.username} avatar_url={conversation.user.avatar_url} />))
                 }
             </ItemList>
             {children}
