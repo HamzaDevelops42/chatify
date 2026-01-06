@@ -2,17 +2,24 @@
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import { rejectFriendRequest } from '@/services/supabase/actions/friends';
+import { acceptFriendRequest, rejectFriendRequest } from '@/services/supabase/actions/friends';
 import { Check, User, X } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import React from 'react'
 import { toast } from 'sonner';
 
 const FriendRequest = ({ id, username, avatarUrl }: { id: string; username: string; avatarUrl?: string | null }) => {
-const router = useRouter()
+    const router = useRouter()
 
     const handleAccept = async () => {
-
+        const response = await acceptFriendRequest(id)
+        if (response.success) {
+            router.refresh()
+            toast.success(response.data.message)
+        } else {
+            router.refresh()
+            toast.error(response.error)
+        }
     }
     const handleReject = async () => {
         const response = await rejectFriendRequest(id)
@@ -20,6 +27,7 @@ const router = useRouter()
             router.refresh()
             toast.success(response.data.message)
         } else {
+            router.refresh()
             toast.error(response.error)
         }
     }

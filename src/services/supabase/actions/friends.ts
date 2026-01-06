@@ -78,7 +78,6 @@ export async function sendFriendRequest(username: string) {
     })
 }
 
-
 export async function getFriendRequests() {
     return actionResponse(async () => {
 
@@ -134,7 +133,13 @@ export async function rejectFriendRequest(id: string) {
 
         const supabase = await createAdminClient()
 
-        const { error } = await supabase.from("friend_requests").update({ "status": "rejected" }).eq("id", id).select("status")
+        const { error } = await supabase
+            .from("friend_requests")
+            .update({ "status": "rejected" })
+            .eq("id", id)
+            .eq("receiver_id", User.id)
+            .eq("status", "pending")
+            .select("status")
 
         if (error) {
             throw new Error("Error rejecting request")
@@ -142,6 +147,71 @@ export async function rejectFriendRequest(id: string) {
 
         return {
             message: "Friend request rejected successfully"
+        }
+    })
+}
+
+export async function acceptFriendRequest(id: string) {
+    return actionResponse(async () => {
+
+        const { User } = await getCurrentUser()
+        if (!User) {
+            throw new Error("user not authenticated")
+        }
+
+        const supabase = await createAdminClient()
+
+        const { error, data: updatedStatus } = await supabase
+            .from("friend_requests")
+            .update({ "status": "accepted" })
+            .eq("id", id)
+            .eq("receiver_id", User.id)
+            .eq("status", "pending")
+            .select("*")
+            .single()
+
+        if (error) {
+            throw new Error("Error accepting request")
+        }
+
+        const { error: insertFriendsError } = await supabase.from("friends").insert({
+            user1_id: updatedStatus.sender_id,
+            user2_id: User.id
+        })
+
+        if (insertFriendsError) {
+            throw new Error("Error accepting request")
+        }
+
+        const { error: insertChatError, data: chatRoom } = await supabase.from("chats").insert({
+            name: "Direct Message",
+            chat_type: "direct",
+            created_by: updatedStatus.sender_id
+        }).select("*").single()
+
+        if (insertChatError) {
+            throw new Error("Error accepting request")
+        }
+
+        const { error: insertChatMembersError } = await supabase.from("chat_members").insert([
+            {
+                chat_id: chatRoom.id,
+                user_id: updatedStatus.sender_id,
+                role: "admin"
+            },
+            {
+                chat_id: chatRoom.id,
+                user_id: User.id,
+                role: "member"
+            }
+        ])
+
+        if (insertChatMembersError) {
+            throw new Error("Error accepting request")
+        }
+
+        return {
+            message: "Friend request accepted successfully"
         }
     })
 }
