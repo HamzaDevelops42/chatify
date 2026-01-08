@@ -67,3 +67,78 @@ export async function getDirectConversations() {
         }
     })
 }
+
+
+export async function getDm(chatId: string) {
+    return actionResponse(async () => {
+        const { User } = await getCurrentUser()
+        if (!User) {
+            throw new Error("User not authenticated")
+        }
+
+        const supabase = await createAdminClient()
+        const { data, error } = await supabase
+            .from("chat_members")
+            .select(`
+                chat_id,
+                chats!inner (
+                    id,
+                    chat_type
+                ),
+                user:profiles!chat_members_user_id_fkey (
+                    id,
+                    username,
+                    avatar_url
+                )
+            `)
+            .eq("chat_id", chatId)
+            .eq("chats.chat_type", "direct")
+
+        if (error || !data || data.length === 0) {
+            throw new Error("Chat does not exist")
+        }
+
+        // Normalize Supabase response (user comes as array)
+        const normalized = data.map((row: any) => {
+            const user = Array.isArray(row.user) ? row.user[0] : row.user
+
+            if (!user) {
+                throw new Error("Invalid chat member data")
+            }
+
+            return {
+                chat_id: row.chat_id,
+                user: {
+                    id: user.id,
+                    username: user.username,
+                    avatar_url: user.avatar_url,
+                },
+            }
+        })
+
+        const isMember = normalized.some(
+            row => row.user.id === User.id
+        )
+
+        if (!isMember) {
+            throw new Error("You are not a member of this chat")
+        }
+
+        const otherUser = normalized.find(
+            row => row.user.id !== User.id
+        )
+
+        if (!otherUser) {
+            throw new Error("Direct message participant not found")
+        }
+
+        return {
+            message: "Direct message fetched successfully",
+            data: {
+                chat_id: chatId,
+                user: otherUser.user,
+            },
+        }
+    })
+}
+
