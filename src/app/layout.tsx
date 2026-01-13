@@ -22,7 +22,7 @@ export default function RootLayout({ children }: React.PropsWithChildren<{}>) {
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased h-svh`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased h-svh overflow-hidden`}
         suppressHydrationWarning
       >
         <ThemeProvider
