@@ -4,7 +4,6 @@ import { DirectConversation, getDirectConversations } from "@/services/supabase/
 
 export default async function ConversationsLayout({ children }: React.PropsWithChildren<{}>) {
     const conversations: DirectConversation[] = await (await getDirectConversations())?.data?.data
-    console.log(conversations)
     return (
         <>
             <ItemList title="Conversations">
