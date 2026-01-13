@@ -1,3 +1,4 @@
+"use server"
 import { cache } from "react"
 import { createClient } from "../server"
 

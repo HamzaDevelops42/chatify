@@ -56,7 +56,8 @@ export function ChatMessage({
                     <p className={cn(
                         "text-xs flex w-full my-1", {
                         "text-primary-foreground justify-end": fromCurrentuser,
-                        "text-secondary-foreground justify-start": !fromCurrentuser
+                        "text-secondary-foreground justify-start": !fromCurrentuser,
+                        "text-destructive": status === "error"
                     }
                     )}>
                         {mounted && DATE_FORMATTER.format(new Date(created_at))}
