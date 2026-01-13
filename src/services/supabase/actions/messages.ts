@@ -15,7 +15,32 @@ export type Message = {
     }
 }
 
+export async function getMessages(chatId: string) {
+    return actionResponse(async () => {
 
+        const { User, profile } = await getCurrentUser()
+        if (!User || !profile) {
+            throw new Error("user not authenticated")
+        }
+        const supabase = await createAdminClient()
+
+        const { data, error } = await supabase
+            .from("messages")
+            .select(
+                "id, content, created_at, sender_id, author:profiles (username, avatar_url)"
+            )
+            .eq("chat_id", chatId)
+            .order("created_at", { ascending: true })
+            .limit(20)
+        if (error) {
+            throw new Error("Error getting messages")
+        }
+        return {
+            userId: User.id,
+            data
+        }
+    })
+}
 
 export async function sendMessage(data: {
     id: string
