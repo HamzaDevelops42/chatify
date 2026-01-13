@@ -8,6 +8,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar"
 
 const DATE_FORMATTER = new Intl.DateTimeFormat(undefined, {
     timeStyle: "short",
+    hour12: true
 })
 
 export function ChatMessage({

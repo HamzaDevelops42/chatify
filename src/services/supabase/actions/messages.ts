@@ -46,6 +46,7 @@ export async function sendMessage(data: {
     id: string
     text: string
     chatId: string
+    time: string
 }) {
 
     return actionResponse(async () => {
@@ -71,7 +72,6 @@ export async function sendMessage(data: {
         if (membershipError || !membership) {
             throw new Error("User is not a member of the chat room")
         }
-
         const { data: message, error } = await supabase
             .from("messages")
             .insert({
@@ -79,12 +79,12 @@ export async function sendMessage(data: {
                 content: data.text.trim(),
                 chat_id: data.chatId,
                 sender_id: User.id,
+                created_at: data.time
             })
             .select(
                 "id, content, created_at, sender_id, author:profiles (username, avatar_url)"
             )
             .single()
-
         if (error || !message) {
             throw new Error("Failed to send message")
         }

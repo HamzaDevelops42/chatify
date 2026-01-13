@@ -35,7 +35,7 @@ export function ChatInput({
         setMessage("")
         const id = crypto.randomUUID()
         onSend({ id, text })
-        const result = await sendMessage({ id, text, chatId })
+        const result = await sendMessage({ id, text, chatId, time: new Date().toISOString() })
         if (result.error) {
             toast.error(result.error)
             onErrorSend(id)
