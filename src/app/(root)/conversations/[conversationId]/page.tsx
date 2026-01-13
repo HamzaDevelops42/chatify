@@ -1,14 +1,10 @@
 import { ChatBody } from '@/components/ChatBody'
 import ChatHeader from '@/components/ChatHeader'
-import { ChatInput } from '@/components/ChatInput'
 import ConversationsContainer from '@/components/ConversationContainer'
 import ConversationNotFound from '@/components/ConversationNotFound'
 import { getDm } from '@/services/supabase/actions/conversations'
 import { getMessages } from '@/services/supabase/actions/messages'
 import { getCurrentUser } from '@/services/supabase/hooks/getCurrentUser'
-import { useCurrentUser } from '@/services/supabase/hooks/useCurrentUserClient'
-import { channel } from 'diagnostics_channel'
-import { toast } from 'sonner'
 
 async function page({ params }: { params: Promise<{ conversationId: string }> }) {
 
@@ -19,7 +15,6 @@ async function page({ params }: { params: Promise<{ conversationId: string }> })
   }
   const messages = await getMessages(conversationId)
   const {profile} = await getCurrentUser()
-console.log(profile)
 
   return (
     <ConversationsContainer>

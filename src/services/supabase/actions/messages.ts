@@ -30,7 +30,7 @@ export async function getMessages(chatId: string) {
                 "id, content, created_at, sender_id, author:profiles (username, avatar_url)"
             )
             .eq("chat_id", chatId)
-            .order("created_at", { ascending: true })
+            .order("created_at", { ascending: false })
             .limit(20)
         if (error) {
             throw new Error("Error getting messages")
