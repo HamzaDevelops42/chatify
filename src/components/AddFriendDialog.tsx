@@ -31,11 +31,11 @@ const AddFriendDialog = () => {
 
   async function onsubmit(data: z.infer<typeof formShema>) {
     const response = await sendFriendRequest(data.username)
-    if(response.success){
+    if (response.success) {
       toast.success(response.data.message)
       setOpen(false)
       router.refresh()
-    }else {
+    } else {
       toast.error(response.error)
     }
   }
@@ -60,7 +60,7 @@ const AddFriendDialog = () => {
           <DialogTitle>
             Add Friend
           </DialogTitle>
-          <DialogDescription>
+          <DialogDescription className="text-xs sm:text-sm">
             Enter the username of the person you want to send friend request
           </DialogDescription>
         </DialogHeader>
@@ -85,11 +85,11 @@ const AddFriendDialog = () => {
               )}
             />
 
-            <Field orientation="horizontal" className="w-full">
+            <Field orientation="horizontal" className="w-full flex flex-col sm:flex-row">
               <Button
                 type="submit"
                 disabled={form.formState.isSubmitting}
-                className="grow"
+                className="w-full sm:grow sm:w-auto"
               >
                 <LoadingSwap isLoading={form.formState.isSubmitting}>
                   Send Request
@@ -98,7 +98,7 @@ const AddFriendDialog = () => {
               <Button
                 variant="outline"
                 type="button"
-                className="grow"
+                className="w-full sm:grow sm:w-auto"
                 onClick={() => setOpen(false)}
               >
                 Close
