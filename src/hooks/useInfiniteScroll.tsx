@@ -34,7 +34,30 @@ export const useInfiniteScrollChat = ({
             return
         }
 
-        setMessages(prev => [...data.toReversed(), ...prev])
+        // The below code is to normalize data for Ts because Ts thinks that the author is an array of objects 
+        const normalized: Message[] = data
+            .toReversed()
+            .map((row) => {
+                const author = row.author[0]
+
+                if (!author) {
+                    throw new Error("Author missing in message")
+                }
+
+                return {
+                    id: row.id,
+                    content: row.content,
+                    created_at: row.created_at,
+                    sender_id: row.sender_id,
+                    author: {
+                        username: author.username,
+                        avatar_url: author.avatar_url,
+                    },
+                }
+            })
+
+        setMessages(prev => [...normalized, ...prev])
+
         setStatus(data.length < LIMIT ? "done" : "idle")
     }
 
