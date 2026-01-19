@@ -1,14 +1,28 @@
 import { ChatBody } from '@/components/ChatBody'
 import ChatHeader from '@/components/ChatHeader'
+import ChatLoadingSkeleton from '@/components/ChatLoadingSkeleton'
 import ConversationsContainer from '@/components/ConversationContainer'
 import ConversationNotFound from '@/components/ConversationNotFound'
 import { getDm } from '@/services/supabase/actions/conversations'
 import { getMessages } from '@/services/supabase/actions/messages'
 import { getCurrentUser } from '@/services/supabase/hooks/getCurrentUser'
+import { Suspense } from 'react'
 
 async function page({ params }: { params: { conversationId: string } }) {
   const { conversationId } = await params
 
+  return (
+    <ConversationsContainer>
+      <Suspense fallback={<ChatLoadingSkeleton />}>
+        <Render conversationId={conversationId} />
+      </Suspense>
+    </ConversationsContainer>
+
+  )
+}
+export default page
+
+async function Render({ conversationId }: { conversationId: string }) {
   const [response, messages, user] = await Promise.all([
     getDm(conversationId),
     getMessages(conversationId),
@@ -17,7 +31,7 @@ async function page({ params }: { params: { conversationId: string } }) {
   if (!response.success || !response.data.data) return <ConversationNotFound />
 
   return (
-    <ConversationsContainer>
+    <>
       <ChatHeader
         name={response.data.data.user.username}
         avatarUrl={response.data.data.user.avatar_url}
@@ -27,7 +41,6 @@ async function page({ params }: { params: { conversationId: string } }) {
         chatId={conversationId}
         user={user.profile}
       />
-    </ConversationsContainer>
+    </>
   )
 }
-export default page

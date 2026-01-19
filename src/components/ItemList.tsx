@@ -2,6 +2,7 @@
 import { cn } from '@/lib/utils';
 import { Card } from './ui/card'
 import { useConversation } from '@/hooks/useConversation';
+import { Loader2Icon } from 'lucide-react';
 
 type Props = React.PropsWithChildren<{
     title: string;
@@ -27,3 +28,13 @@ const ItemList = ({ children, title, Action }: Props) => {
 }
 
 export default ItemList
+
+export function ItemListLoader() {
+    return (
+        <div className="w-full h-full flex items-center justify-center">
+            <Loader2Icon className="animate-spin size-10" />
+        </div>
+    )
+}
+
+
