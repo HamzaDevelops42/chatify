@@ -6,12 +6,12 @@ export default async function ConversationsList() {
     return (
         <>
             {
-                conversations.length === 0 ? (
+                conversations?.length === 0 ? (
                     <p className="w-full h-full flex items-center justify-center">
                         No conversations found
                     </p>
                 ) : (
-                    conversations.map(conversation => (
+                    conversations?.map(conversation => (
                         <ConversationBox
                             key={conversation.chat_id}
                             id={conversation.chat_id}
