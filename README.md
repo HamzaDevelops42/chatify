@@ -1,36 +1,81 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Chat Application (Next.js + Supabase)
 
-## Getting Started
+This is a real-time chat application built with **Next.js** and
+**Supabase** (Auth, Database, Realtime).
 
-First, run the development server:
+------------------------------------------------------------------------
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+##  Getting Started
+
+Follow these steps to run the project locally.
+
+### 1️⃣ Clone the repository
+
+``` bash
+git clone https://github.com/HamzaDevelops42/chatify
+cd chatify
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+------------------------------------------------------------------------
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### 2️⃣ Install dependencies
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+``` bash
+npm install
+```
 
-## Learn More
+------------------------------------------------------------------------
 
-To learn more about Next.js, take a look at the following resources:
+### 3️⃣ Setup environment variables
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Create a `.env.local` file in the root of the project and add the
+following variables:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+``` env
+NEXT_PUBLIC_SUPABASE_URL=
+NEXT_PUBLIC_SUPABASE_PUBLISHABLE_OR_ANON_KEY=
+SUPABASE_SERVICE_ROLE_KEY=
+```
 
-## Deploy on Vercel
+------------------------------------------------------------------------
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### 4️⃣ Run the development server
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+``` bash
+npm run dev
+```
+
+The app should now be running at:
+
+    http://localhost:3000
+
+------------------------------------------------------------------------
+
+## Supabase Project Recreation
+
+If you want to recreate the Supabase project (database schema, enums,
+triggers, functions, and RLS policies):
+
+**See [`supabase.md`](./supabase.md)**
+
+
+Follow the steps in `supabase.md` **in order** to fully recreate the
+backend.
+
+------------------------------------------------------------------------
+
+## Tech Stack
+
+-   Next.js
+-   TypeScript
+-   Supabase
+    -   Auth
+    -   Postgres
+    -   Realtime
+-   React Hooks
+
+------------------------------------------------------------------------
+
+## 📄 License
+
+MIT
