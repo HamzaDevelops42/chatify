@@ -146,6 +146,34 @@ WITH CHECK (
     AND cm.user_id = auth.uid()
   )
 );
+
+CREATE POLICY "Users can read realtime messages from their chats"
+ON realtime.messages
+FOR SELECT
+TO authenticated
+USING (
+  (
+    SELECT substring(messages.topic, '^chat:([^:]+):messages$')
+  ) IN (
+    SELECT chat_members.chat_id::text
+    FROM chat_members
+    WHERE chat_members.user_id = auth.uid()
+  )
+);
+
+CREATE POLICY "Users can insert realtime messages to their chats"
+ON realtime.messages
+FOR INSERT
+TO authenticated
+WITH CHECK (
+  (
+    SELECT substring(messages.topic, '^chat:([^:]+):messages$')
+  ) IN (
+    SELECT chat_members.chat_id::text
+    FROM chat_members
+    WHERE chat_members.user_id = auth.uid()
+  )
+);
 ```
 
 ---
